@@ -1,5 +1,5 @@
 import { useRouter } from 'vue-router';
-import { RouteName } from '@/router/route-names';
+import { RouteName, RoutePath } from '@/router/route-names';
 
 export function useNavigation() {
   const router = useRouter();
@@ -11,7 +11,12 @@ export function useNavigation() {
     });
   }
 
+  function goMatches() {
+    router.push(RoutePath.MatchChatLayout);
+  }
+
   return {
     goChat,
+    goMatches,
   };
 }

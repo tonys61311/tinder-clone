@@ -16,7 +16,7 @@ const activeUserId = computed(() => route.params.userId);
 <template>
   <div class="p-4 space-y-2">
     <div
-      v-for="user in userStore.users"
+      v-for="user in userStore.sortedUserList"
       :key="user.name"
       class="flex items-center space-x-4 cursor-pointer hover:bg-gray-800 p-2 rounded"
       :class="{ 'bg-gray-700': activeUserId === user.id }"

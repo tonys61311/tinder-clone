@@ -1,71 +1,65 @@
 <script lang="ts" setup>
 import { computed, nextTick, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
 import Avatar from '@/components/Avatar.vue';
 import IconButton from '@/components/IconButton.vue';
 import { getRandomAvatar } from '@/utils/randomUtils';
 import { X, Smile } from 'lucide-vue-next';
 import EmojiPicker from 'vue3-emoji-picker';
 import 'vue3-emoji-picker/css';
-import { RoutePath } from '@/router/route-names';
+import { useNavigation } from '@/composables/useNavigation';
+import { useUserStore } from '@/stores/userStore';
 
-const avatarUrl = getRandomAvatar();
-const messages = ref([
-  { text: '嗨', isSelf: false },
-  { text: 'Hi', isSelf: true },
-  { text: '下班了嗎', isSelf: true },
-  { text: '現在剛下班', isSelf: false },
-  { text: '有空嗎？', isSelf: false },
-  { text: '有空啊，你呢？', isSelf: true },
-  { text: '我也有空', isSelf: false },
-  { text: '那我們聊聊天吧', isSelf: true }, 
-  { text: '好啊', isSelf: false },
-  { text: '你喜歡什麼音樂？', isSelf: true },
-  { text: '我喜歡搖滾樂，你呢？', isSelf: false },
-  { text: '我也喜歡搖滾樂！', isSelf: true },
-  { text: '那我們有共同的興趣了！', isSelf: false }
-]);
-
-const reversedMessages = computed(() => [...messages.value].reverse());
-
+// 聊天輸入框綁定的資料
 const input = ref('');
+
+// 接收父層傳入的 userId
 const props = defineProps<{ userId: string }>();
-const router = useRouter();
+
+// 控制表情選單顯示
 const showEmoji = ref(false);
 
-function goBack() {
-  router.push(RoutePath.MatchChatLayout);
-}
+// 自定義導航方法
+const { goMatches } = useNavigation();
 
+// 取得全局的用戶資料 store
+const store = useUserStore();
+
+// 根據傳入的 userId 取得對應用戶資料
+const user = store.getUserById(props.userId);
+
+// 計算屬性：將訊息反轉，最新訊息顯示在下方
+const reversedMessages = computed(() => [...user.messages].reverse());
+
+// 選擇表情符號後，將表情加入輸入框，並關閉表情選單
 function handleEmojiSelect(e: { i: string }) {
   input.value += e.i;
   showEmoji.value = false;
 }
 
+// 傳送訊息，並將輸入框清空
 const sendMessage = () => {
   if (input.value) {
-   messages.value = [
-    ...messages.value,
-    { text: input.value, isSelf: true }
-  ];
+    store.addMessageAndUpdateTimestamp(props.userId, input.value, true); // true 代表自己發送
     input.value = '';
   }
 }
 
-
+// 聊天視窗容器，用來滾動到底部
 const chatContainer = ref<HTMLElement | null>(null);
 
+// 捲動聊天視窗到底部
 const scrollToBottom = () => {
   nextTick(() => {
     setTimeout(() => {
       if (chatContainer.value) {
         chatContainer.value.scrollTop = chatContainer.value.scrollHeight - chatContainer.value.clientHeight;
       }
-    }, 100);
+    }, 100); // 稍微延遲，避免渲染時機問題
   });
 };
 
-watch(messages, () => {
+// 監聽訊息變化，每次有新訊息就捲動到底部
+watch(user.messages, () => {
   scrollToBottom();
 });
 </script>
@@ -75,7 +69,7 @@ watch(messages, () => {
 
     <!-- 關閉按鈕 -->
     <button
-      @click="goBack"
+      @click="goMatches"
       class="absolute top-2 right-2 text-white hover:text-red-500 p-1"
     >
       <X class="w-6 h-6" />
@@ -85,7 +79,7 @@ watch(messages, () => {
     <div ref="chatContainer" class="flex flex-col-reverse overflow-y-auto h-full scrollbar-hide p-4">
       <!-- 若高度還沒撐滿，則用此空白區域撐滿 -->
       <div class="flex-1" />
-      
+
       <div
         v-for="(msg, index) in reversedMessages"
         :key="index"
@@ -96,7 +90,7 @@ watch(messages, () => {
       >
         <!-- 對方訊息 -->
         <template v-if="!msg.isSelf">
-          <Avatar :src="avatarUrl" width="w-10" />
+          <Avatar :src="user.avatar" width="w-10" />
           <div class="bg-gray-800 text-white px-3 py-1 rounded-xl max-w-[70%] rounded-bl-md">
             {{ msg.text }}
           </div>
@@ -108,6 +102,13 @@ watch(messages, () => {
             {{ msg.text }}
           </div>
         </template>
+      </div>
+
+      <!-- 好友提示，固定在最上方，水平置中 -->
+      <div class="w-full flex justify-center mb-4">
+        <div class="text-gray-400 text-sm">
+          您與 {{ user.name }} 已成為好友
+        </div>
       </div>
     </div>
 

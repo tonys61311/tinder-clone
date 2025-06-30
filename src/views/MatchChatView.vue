@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import TabLayout from '@/components/TabLayout.vue';
 import type { TabItem } from '@/components/TabLayout.vue';
 import MatchedList from '@/components/MatchedList.vue';
@@ -7,13 +7,22 @@ import MessageList from '@/components/MessageList.vue';
 import MobileTabBar from '@/components/MobileTabBar.vue';
 import { Heart, MessageSquare } from 'lucide-vue-next';
 import { useUserStore } from '@/stores/userStore';
-import { storeToRefs } from 'pinia';
+import { useNavigation } from '@/composables/useNavigation';
+import { useRouter } from 'vue-router';
+import { RoutePath } from '@/router/route-names';
 
 
-const userStore = useUserStore();
+const { initUsers } = useUserStore();
+const activeTab = ref('match');
+const { goMatches } = useNavigation();
+const router = useRouter();
 
 onMounted(() => {
-  userStore.initUsers();
+  initUsers();
+});
+
+const isMatchChatLayout = computed(() => {
+  return router.currentRoute.value.path === RoutePath.MatchChatLayout;
 });
 
 const tabs: TabItem[] = [
@@ -21,7 +30,11 @@ const tabs: TabItem[] = [
   { key: 'chat', label: '聊天', component: MessageList }
 ];
 
-const { activeTab, isMatchChatLayout } = storeToRefs(userStore);
+function switchTab(tab: string) {
+  if (!isMatchChatLayout.value) {
+    goMatches();
+  }
+}
 
 </script>
 
@@ -65,7 +78,7 @@ const { activeTab, isMatchChatLayout } = storeToRefs(userStore);
             { icon: Heart, key: 'match' },
             { icon: MessageSquare, key: 'chat' }
           ]"
-          @click="userStore.switchTab"
+          @click="switchTab"
         />
 
 
