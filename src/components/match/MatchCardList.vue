@@ -6,13 +6,19 @@ import { useUserStore } from '@/stores/userStore';
 const store = useUserStore();
 const recommendedUsers = computed(() => store.recommendedUsers);
 
-const currentIndex = ref(0);
+const currentRecommendedUserIndex = computed({
+  get: () => store.currentRecommendedUserIndex,
+  set: (value) => {
+    store.setCurrentRecommendedUserIndex(value);
+  },
+});
+
 const isAnimating = ref(false);
 const slideDirection = ref<'left' | 'right'>('right');
-const showTWoCards = computed(() => recommendedUsers.value.slice(currentIndex.value, currentIndex.value + 2).reverse());
+const showTWoCards = computed(() => recommendedUsers.value.slice(currentRecommendedUserIndex.value, currentRecommendedUserIndex.value + 2).reverse());
 
 const handleAction = (like: boolean, userId: string) => {
-  if (isAnimating.value || currentIndex.value >= recommendedUsers.value.length) return;
+  if (isAnimating.value || currentRecommendedUserIndex.value >= recommendedUsers.value.length) return;
 
   slideDirection.value = like ? 'right' : 'left';
   isAnimating.value = true;
@@ -20,11 +26,11 @@ const handleAction = (like: boolean, userId: string) => {
   if (like) store.addToMatchedUsers(userId);
 
   setTimeout(() => {
-    currentIndex.value++;
+    currentRecommendedUserIndex.value++;
     isAnimating.value = false;
 
     // 如果剩兩張卡片，則在呼叫 loadRecommendedUsers 新增卡片
-    if (currentIndex.value + 2 >= recommendedUsers.value.length) {
+    if (currentRecommendedUserIndex.value + 2 >= recommendedUsers.value.length) {
       store.loadRecommendedUsers();
     }
   }, 300);

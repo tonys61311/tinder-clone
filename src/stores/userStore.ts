@@ -9,6 +9,12 @@ export const useUserStore = defineStore('userStore', () => {
   // 推薦用戶列表
   const recommendedUsers = ref<User[]>([]);
 
+  const currentRecommendedUserIndex = ref(0);
+
+  function setCurrentRecommendedUserIndex(index: number) {
+    currentRecommendedUserIndex.value = index;
+  }
+
   /**
    * 依照 userId 取得已配對用戶資料
    */
@@ -82,6 +88,8 @@ export const useUserStore = defineStore('userStore', () => {
   return {
     matchedUsers,
     recommendedUsers,
+    currentRecommendedUserIndex,
+    setCurrentRecommendedUserIndex,
     sortedUserList,
     getUserById,
     addMessageAndUpdateTimestamp,
