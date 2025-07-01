@@ -26,11 +26,6 @@ jobs:
       - name: Build Project
         run: npm run build
 
-      - name: Configure GitHub Pages
-        run: |
-          echo "BASE_URL=/" >> .env.production
-          echo "VITE_BASE_URL=/" >> .env.production
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
