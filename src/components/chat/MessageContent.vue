@@ -124,7 +124,7 @@ watch(user.messages, () => {
       />
       
       <div class="relative">
-        <IconButton :icon="Smile" @click="showEmoji = !showEmoji" />
+        <IconButton :icon="Smile" @click="showEmoji = !showEmoji" buttonClass="bg-transparent" />
         <EmojiPicker
           v-if="showEmoji"
           theme="dark"

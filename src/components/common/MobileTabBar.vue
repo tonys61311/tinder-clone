@@ -30,7 +30,7 @@ function handleClick(itemKey: string) {
       :icon="item.icon"
       @click="handleClick(item.key)"
       :buttonClass="[
-        'p-2 rounded-full transition',
+        'p-2 rounded-full transition bg-transparent',
         modelValue === item.key ? 'text-blue-500' : ''
       ].join(' ')"
     />
