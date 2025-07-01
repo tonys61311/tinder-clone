@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
         '@': fileURLToPath(new URL('./src', import.meta.url))
       },
     },
-    base: env.VITE_API_BASE_URL,
+    base: env.VITE_BASE_URL || '/',
   }
 })
 
