@@ -10,6 +10,10 @@
 
 [Demo](https://tonys61311.github.io/tinder-clone)
 
+## 展示影片
+
+[YouTube 影片連結](https://youtu.be/5-ajfXv_eSU)
+
 ## 專案結構
 
 ```
@@ -122,6 +126,7 @@ src/                              # 應用主要程式碼
 ##### MatchCardList.vue（配對卡片列表）
 
 配對卡片介面，使用者選擇喜好（like/dislike）來進行配對，模擬實際的配對操作。
+避免一次載入過多資料，影響效能，**每次加載 5 筆配對卡片**，使用者滑動或操作結束後再進行下一批次的加載。
 
 若使用者在左側點擊：
 
