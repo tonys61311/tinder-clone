@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { getRandomAvatar } from '@/utils/randomUtils';
 import type { User } from '@/types/user';
 import { userDataApi } from '@/api/userDataApi'
 
@@ -9,92 +8,6 @@ export const useUserStore = defineStore('userStore', () => {
   const matchedUsers = ref<User[]>([]);
   // 推薦用戶列表
   const recommendedUsers = ref<User[]>([]);
-
-  /**
-   * 初始化已配對用戶資料
-   */
-  function initMatchedUsers() {
-    if (matchedUsers.value.length > 0) return;
-    
-    const rawUsers = [
-        { 
-          id: '1', 
-          name: 'mkiiiiiii',
-          age: 25,
-          photos: [getRandomAvatar(), getRandomAvatar(), getRandomAvatar()],
-          messages: [
-            { text: '🌷', isSelf: false },
-            { text: 'hi', isSelf: true },
-            { text: '🌷', isSelf: false },
-            { text: '🌷', isSelf: true },
-            { text: '🌷', isSelf: false },
-            { text: '🌷', isSelf: true },
-            { text: '🌷', isSelf: false },
-            { text: '🌷', isSelf: true }
-          ] 
-        },
-        { 
-          id: '2', 
-          name: 'Bella', 
-          age: 27,
-          photos: [getRandomAvatar()], 
-          isVerified: true, 
-          messages: [
-            { text: '嗨', isSelf: false },
-            { text: 'Hi', isSelf: true },
-            { text: '下班了嗎', isSelf: true },
-            { text: '現在剛下班', isSelf: false },
-            { text: '有空嗎？', isSelf: false },
-            { text: '有空啊，你呢？', isSelf: true },
-            { text: '我也有空', isSelf: false },
-            { text: '那我們聊聊天吧', isSelf: true }, 
-            { text: '好啊', isSelf: false },
-            { text: '你喜歡什麼音樂？', isSelf: true },
-            { text: '我喜歡搖滾樂，你呢？', isSelf: false },
-            { text: '我也喜歡搖滾樂！', isSelf: true },
-            { text: '那我們有共同的興趣了！', isSelf: false }
-          ]
-        },
-        { id: '3', name: '曾', age: 24, photos: [getRandomAvatar()] },
-        { id: '4', name: 'Ssu-Ting', age: 26, photos: [getRandomAvatar()], isVerified: true },
-        { id: '5', name: 'mkiiiiiii', age: 25, photos: [getRandomAvatar()] },
-        { id: '6', name: 'Bella', age: 27, photos: [getRandomAvatar()], isVerified: true },
-        { id: '7', name: '曾', age: 24, photos: [getRandomAvatar()] },
-        { id: '8', name: 'Ssu-Ting', age: 26, photos: [getRandomAvatar()], isVerified: true },
-        { id: '9', name: 'mkiiiiiii', age: 25, photos: [getRandomAvatar()] },
-        { id: '10', name: 'Bella', age: 27, photos: [getRandomAvatar()], isVerified: true },
-        { id: '11', name: '曾', age: 24, photos: [getRandomAvatar()] },
-        { id: '12', name: 'Ssu-Ting', age: 26, photos: [getRandomAvatar()], isVerified: true },
-      ];
-
-
-      matchedUsers.value = rawUsers.map(user => ({
-        ...user,
-        avatar: user.photos[0] || '',
-        messages: user.messages ?? [],
-        timestamp: Date.now(),
-      }));
-  }
-
-  /**
-   * 初始化推薦用戶資料
-   */
-  function initRecommendedUsers() {
-    if (recommendedUsers.value.length > 0) return;
-
-    const rawRecommended = [
-      { id: '13', name: '曾', age: 24, photos: [getRandomAvatar()] },
-      { id: '14', name: 'Ssu-Ting', age: 26, photos: [getRandomAvatar()], isVerified: true },
-      { id: '15', name: 'mkiiiiiii', age: 25, photos: [getRandomAvatar()] },
-      { id: '16', name: 'Bella', age: 27, photos: [getRandomAvatar()], isVerified: true },
-    ];
-
-    recommendedUsers.value = rawRecommended.map(user => ({
-      ...user,
-      avatar: user.photos[0] || '',
-      messages: [],
-    }));
-  }
 
   /**
    * 依照 userId 取得已配對用戶資料

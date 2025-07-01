@@ -23,9 +23,7 @@ const { loadMatchedUsers, loadRecommendedUsers } = useUserStore();
 const apiStore = useApiStore();
 
 onMounted(async () => {
-  await apiRequest(async () => {
-    await loadMatchedUsers();
-    await loadRecommendedUsers();
-  }, { minLoadingTime: 1000 });
+  await loadMatchedUsers();
+  await loadRecommendedUsers();
 });
 </script>
