@@ -1,12 +1,6 @@
 <script lang="ts" setup>
+import type { TabItem } from '@/types/tabItem';
 import { ref, onMounted, nextTick, watch, computed } from 'vue';
-import type { Component } from 'vue';
-
-export interface TabItem {
-  key: string;
-  label: string;
-  component: Component;
-}
 
 const props = defineProps<{
   tabs: TabItem[];

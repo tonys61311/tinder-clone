@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Star } from 'lucide-vue-next';
-import Avatar from '@/components/Avatar.vue';
+import { Avatar } from '@/components';
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
 import { useUserStore } from '@/stores/userStore';
@@ -9,6 +9,8 @@ import { useNavigation } from '@/composables/useNavigation';
 const userStore = useUserStore();
 const { goChat } = useNavigation();
 const route = useRoute();
+
+// 依據路由參數判斷正在聊天的用戶
 const activeUserId = computed(() => route.params.userId);
 
 </script>

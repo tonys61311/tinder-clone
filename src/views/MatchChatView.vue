@@ -1,25 +1,16 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
-import TabLayout from '@/components/TabLayout.vue';
-import type { TabItem } from '@/components/TabLayout.vue';
-import MatchedList from '@/components/MatchedList.vue';
-import MessageList from '@/components/MessageList.vue';
-import MobileTabBar from '@/components/MobileTabBar.vue';
+import { computed, ref } from 'vue';
 import { Heart, MessageSquare } from 'lucide-vue-next';
-import { useUserStore } from '@/stores/userStore';
 import { useNavigation } from '@/composables/useNavigation';
 import { useRouter } from 'vue-router';
 import { RoutePath } from '@/router/route-names';
+import { TabLayout, MatchedList, MessageList, MobileTabBar } from '@/components';
+import type { TabItem } from '@/types/tabItem';
 
 
-const { initUsers } = useUserStore();
 const activeTab = ref('match');
 const { goMatches } = useNavigation();
 const router = useRouter();
-
-onMounted(() => {
-  initUsers();
-});
 
 const isMatchChatLayout = computed(() => {
   return router.currentRoute.value.path === RoutePath.MatchChatLayout;

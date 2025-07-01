@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import IconButton from '@/components/IconButton.vue';
+import { IconButton } from '@/components';
 import type { FunctionalComponent } from 'vue';
 
 const props = defineProps<{

@@ -15,12 +15,12 @@ const routes = [
       {
         path: '',
         name: RouteName.MatchContent,
-        component: () => import('@/components/MatchCardList.vue')
+        component: () => import('@/components/match/MatchCardList.vue')
       },
       {
         path: 'chat/:userId',
         name: RouteName.MessageContent,
-        component: () => import('@/components/MessageContent.vue'),
+        component: () => import('@/components/chat/MessageContent.vue'),
         props: true
       },
     ]
@@ -28,7 +28,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.VITE_API_BASE_URL || '/'),
   routes
 })
 

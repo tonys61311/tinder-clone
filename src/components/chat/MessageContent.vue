@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { computed, nextTick, ref, watch } from 'vue';
-import Avatar from '@/components/Avatar.vue';
-import IconButton from '@/components/IconButton.vue';
-import { getRandomAvatar } from '@/utils/randomUtils';
+import { Avatar, IconButton } from '@/components';
 import { X, Smile } from 'lucide-vue-next';
 import EmojiPicker from 'vue3-emoji-picker';
 import 'vue3-emoji-picker/css';
@@ -115,8 +113,15 @@ watch(user.messages, () => {
 
     <!-- 輸入區 -->
     <div class="border-t border-gray-700 p-4 flex items-center space-x-4">
-      <input v-model="input" type="text" placeholder="輸入訊息" class="flex-1 bg-transparent text-white focus:outline-none" id="messageInput"
-  name="message" />
+      <input 
+        v-model="input" 
+        type="text" 
+        placeholder="輸入訊息" 
+        class="flex-1 bg-transparent text-white focus:outline-none" 
+        id="messageInput"
+        name="message" 
+        @keydown.enter="sendMessage"
+      />
       
       <div class="relative">
         <IconButton :icon="Smile" @click="showEmoji = !showEmoji" />

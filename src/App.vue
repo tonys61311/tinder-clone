@@ -3,12 +3,29 @@
 
     <!-- Main -->
     <main class="h-full">
-      <router-view />
+      <LoadingView />
+      <ErrorScreen />
+      <router-view v-show="!apiStore.error" />
     </main>
 
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+import { onMounted } from 'vue';
+import { useUserStore } from '@/stores/userStore';
+import { useApiStore } from '@/stores/apiStore'
+import LoadingView from '@/components/common/LoadingView.vue'
+import ErrorScreen from '@/components/common/ErrorScreen.vue'
+import { apiRequest } from '@/utils/apiRequestHandler'
 
+const { loadMatchedUsers, loadRecommendedUsers } = useUserStore();
+const apiStore = useApiStore();
+
+onMounted(async () => {
+  await apiRequest(async () => {
+    loadMatchedUsers();
+    loadRecommendedUsers();
+  }, { minLoadingTime: 1000 });
+});
 </script>

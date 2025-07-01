@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import IconButton from '@/components/IconButton.vue';
+import { IconButton } from '@/components';
 import { Heart, X, ChevronLeft, ChevronRight } from 'lucide-vue-next';
 
 const props = defineProps<{
@@ -13,13 +13,6 @@ const emit = defineEmits<{
   (e: 'like'): void;
   (e: 'dislike'): void;
 }>();
-
-const images = [
-  `https://randomuser.me/api/portraits/men/1.jpg`,
-  `https://randomuser.me/api/portraits/men/2.jpg`,
-  `https://randomuser.me/api/portraits/men/3.jpg`
-];
-
 const currentIndex = ref(0);
 const direction = ref<'left' | 'right'>('right');
 
