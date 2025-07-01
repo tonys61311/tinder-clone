@@ -24,8 +24,8 @@ const apiStore = useApiStore();
 
 onMounted(async () => {
   await apiRequest(async () => {
-    loadMatchedUsers();
-    loadRecommendedUsers();
+    await loadMatchedUsers();
+    await loadRecommendedUsers();
   }, { minLoadingTime: 1000 });
 });
 </script>
