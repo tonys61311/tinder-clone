@@ -6,6 +6,7 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
   return {
+    base: '/tinder-clone/',
     plugins: [
       vue(),
     ],
@@ -13,8 +14,7 @@ export default defineConfig(({ mode }) => {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url))
       },
-    },
-    base: env.VITE_BASE_URL || '/',
+    }
   }
 })
 
